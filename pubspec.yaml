@@ -1,0 +1,67 @@
+name: orthodox_church_ramallah
+description: "Orthodox Church Ramallah App"
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  just_audio: ^0.9.36
+  provider: ^6.0.5
+  youtube_player_flutter: ^9.1.3
+  sqflite: ^2.3.0
+  path: ^1.9.0
+  cupertino_icons: ^1.0.8
+  pdfx: ^2.4.0
+  webview_flutter: ^4.8.0
+  video_player: ^2.10.0
+  chewie: 1.7.1
+  connectivity_plus: ^6.0.0
+  url_launcher: ^6.1.8
+  flutter_local_notifications: ^17.0.0
+  timezone: ^0.9.4
+  http: ^1.6.0
+  flutter_vlc_player: ^7.4.3 # Use the latest stable version
+  media_kit: ^1.1.10
+  media_kit_video: ^1.2.4
+  media_kit_libs_video: ^1.0.4  # includes native libs for Android/iOS
+  
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/bible_ar.db
+    - assets/icon/app_icon.png
+    - assets/prayers/
+    - assets/videos/
+    - assets/books/
+    - assets/images/
+    - assets/images/1/
+    - assets/images/2/
+    - assets/images/3/
+    - assets/images/4/
+    - assets/images/5/
+    - assets/images/6/
+    - assets/images/7/
+    - assets/images/8/
+    - assets/images/9/
+    - assets/images/10/
+    - assets/images/11/
+    - assets/images/12/
+    - assets/data/
