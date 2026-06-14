@@ -19,6 +19,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   late final VideoController _controller;
 
   Timer? _retryTimer;
+  Timer? _loadingTimer;
   bool _isLoading = true;
   bool _hasError = false;
 
@@ -26,14 +27,24 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   void initState() {
     super.initState();
     _player = Player();
-    _controller = VideoController(_player);
+
+    // Force software rendering to fix black screen on Android
+    _controller = VideoController(
+      _player,
+      configuration: const VideoControllerConfiguration(
+        enableHardwareAcceleration: false,
+      ),
+    );
+
     _player.stream.error.listen(_onError);
     _player.stream.playing.listen(_onPlaying);
+
     _loadLiveSource();
   }
 
   void _onError(String error) {
     if (!mounted) return;
+    _loadingTimer?.cancel();
     setState(() {
       _isLoading = false;
       _hasError = true;
@@ -44,6 +55,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   void _onPlaying(bool playing) {
     if (!mounted) return;
     if (playing) {
+      _loadingTimer?.cancel();
       setState(() {
         _isLoading = false;
         _hasError = false;
@@ -53,6 +65,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
 
   Future<void> _loadLiveSource() async {
     _retryTimer?.cancel();
+    _loadingTimer?.cancel();
     setState(() {
       _isLoading = true;
       _hasError = false;
@@ -63,6 +76,13 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
         Media(_liveStreamUrl),
         play: true,
       );
+
+      // Fallback: hide loading after 5 seconds if playing event is delayed
+      _loadingTimer = Timer(const Duration(seconds: 5), () {
+        if (mounted && _isLoading && !_hasError) {
+          setState(() => _isLoading = false);
+        }
+      });
     } catch (_) {
       setState(() {
         _isLoading = false;
@@ -88,6 +108,7 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
   @override
   void dispose() {
     _retryTimer?.cancel();
+    _loadingTimer?.cancel();
     _player.dispose();
     super.dispose();
   }
@@ -145,10 +166,6 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
         );
       }
 
-      if (_isLoading) {
-        return const Center(child: CircularProgressIndicator());
-      }
-
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ClipRRect(
@@ -160,9 +177,23 @@ class _LivePlayerPageState extends State<LivePlayerPage> {
             ),
             child: AspectRatio(
               aspectRatio: 16 / 9,
-              child: Video(
-                controller: _controller,
-                controls: NoVideoControls, // hide default controls
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Video always rendered underneath
+                  Video(
+                    controller: _controller,
+                    controls: NoVideoControls,
+                  ),
+                  // Loading overlay on top until stream starts
+                  if (_isLoading)
+                    Container(
+                      color: Colors.black,
+                      child: const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
