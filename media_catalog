@@ -1,0 +1,29 @@
+{
+  "audio": [
+    {
+      "id": "audio-1",
+      "title": "ترنيمة القداس",
+      "description": "جوقة الكنيسة",
+      "path": "https://www.dropbox.com/s/abcd1234efgh/audio1.mp3?dl=1",
+      "thumbnail": "https://www.dropbox.com/s/abcd1234efgh/audio1-cover.jpg?dl=1"
+    }
+  ],
+  "video": [
+    {
+      "id": "video-1",
+      "title": "تراتيل عيد الفصح",
+      "description": "جوقة الكنيسة في عيد الفصح",
+      "path": "https://www.dropbox.com/s/abcd1234efgh/video1.mp4?dl=1",
+      "thumbnail": "https://www.dropbox.com/s/abcd1234efgh/video1-thumb.jpg?dl=1"
+    }
+  ],
+  "books": [
+    {
+      "id": "book-1",
+      "title": "كتاب الصلاة اليومية",
+      "author": "الأب يوحنا",
+      "coverUrl": "https://www.dropbox.com/s/abcd1234efgh/book1-cover.jpg?dl=1",
+      "pdfUrl": "https://www.dropbox.com/s/abcd1234efgh/book1.pdf?dl=1"
+    }
+  ]
+}
